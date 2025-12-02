@@ -17,6 +17,7 @@ package link.thingscloud.freeswitch.esl.spring.boot.starter.template;
 
 import link.thingscloud.freeswitch.esl.IEslEventListener;
 import link.thingscloud.freeswitch.esl.InboundClient;
+import link.thingscloud.freeswitch.esl.constant.EventNames;
 import link.thingscloud.freeswitch.esl.spring.boot.starter.annotation.EslEventName;
 import link.thingscloud.freeswitch.esl.spring.boot.starter.handler.DefaultEslEventHandler;
 import link.thingscloud.freeswitch.esl.spring.boot.starter.handler.EslEventHandler;
@@ -65,9 +66,11 @@ public class IEslEventListenerTemplate implements IEslEventListener, Initializin
 
     private void handleEslEvent(String addr, EslEvent event) {
         String eventName = event.getEventName();
+        // 单独的监听器也要执行
         List<EslEventHandler> handlers = handlerTable.get(eventName);
         if (!CollectionUtils.isEmpty(handlers)) {
-            handlers.forEach(eventHandler -> eventHandler.handle(addr, event));
+            handlers.
+                    forEach(eventHandler -> eventHandler.handle(addr, event));
             return;
         }
         defaultEventHandler.handle(addr, event);

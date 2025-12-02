@@ -53,6 +53,7 @@ public class EslEvent {
     private final Map<String, String> eventHeaders;
     private final List<String> eventBody;
     private final boolean decodeEventHeaders = true;
+    private String addr;
 
     /**
      * <p>Constructor for EslEvent.</p>
@@ -210,5 +211,13 @@ public class EslEvent {
         sb.append(eventBody.size());
         sb.append(" lines.");
         return sb.toString();
+    }
+
+    public String getAddr() {
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+        this.addr = addr;
     }
 }
