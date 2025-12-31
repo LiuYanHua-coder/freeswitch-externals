@@ -55,6 +55,7 @@ public class InboundChannelHandler extends SimpleChannelInboundHandler<EslMessag
     private final ChannelEventListener listener;
     private final ExecutorService publicExecutor;
     private final ExecutorService privateExecutor;
+    private final ExecutorService eventHandlerExecutor;
     private final boolean disablePublicExecutor;
     private Channel channel;
     private String remoteAddr;
@@ -68,11 +69,12 @@ public class InboundChannelHandler extends SimpleChannelInboundHandler<EslMessag
      * @param publicExecutor        a {@link java.util.concurrent.ExecutorService} object.
      * @param disablePublicExecutor a boolean.
      */
-    public InboundChannelHandler(ChannelEventListener listener, ExecutorService publicExecutor, ExecutorService privateExecutor, boolean disablePublicExecutor) {
+    public InboundChannelHandler(ChannelEventListener listener, ExecutorService publicExecutor, ExecutorService privateExecutor, ExecutorService eventHandlerExecutor, boolean disablePublicExecutor) {
         this.listener = listener;
         this.publicExecutor = publicExecutor;
         this.privateExecutor = privateExecutor;
         this.disablePublicExecutor = disablePublicExecutor;
+        this.eventHandlerExecutor = eventHandlerExecutor;
     }
 
     /**
@@ -167,7 +169,7 @@ public class InboundChannelHandler extends SimpleChannelInboundHandler<EslMessag
 
     private void handleEslEvent(EslEvent event) {
         if (disablePublicExecutor) {
-            listener.handleEslEvent(remoteAddr, event);
+            eventHandlerExecutor.execute(() -> listener.handleEslEvent(remoteAddr, event)); // 单线程保证顺序性
         } else {
             publicExecutor.execute(() -> listener.handleEslEvent(remoteAddr, event));
         }

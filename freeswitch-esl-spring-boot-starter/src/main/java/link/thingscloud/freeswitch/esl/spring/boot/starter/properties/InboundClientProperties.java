@@ -36,6 +36,7 @@ public class InboundClientProperties {
     private int workerGroupThread = Runtime.getRuntime().availableProcessors() * 2;
     private int publicExecutorThread = Runtime.getRuntime().availableProcessors() * 2;
     private int privateExecutorThread = Runtime.getRuntime().availableProcessors() * 2;
+    private int eventHandleExecutorThread = 1; // 保证事件的顺序性
     private int callbackExecutorThread = Runtime.getRuntime().availableProcessors() * 2;
     private int defaultTimeoutSeconds = 5;
     private int readTimeoutSeconds = 30;

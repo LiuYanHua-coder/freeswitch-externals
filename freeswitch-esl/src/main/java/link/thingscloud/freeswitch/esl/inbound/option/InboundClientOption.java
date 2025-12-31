@@ -44,6 +44,7 @@ public class InboundClientOption {
     private int publicExecutorThread = Runtime.getRuntime().availableProcessors() * 2;
     private int privateExecutorThread = Runtime.getRuntime().availableProcessors() * 2;
     private int callbackExecutorThread = Runtime.getRuntime().availableProcessors() * 2;
+    private int eventHandleExecutorThread = 1;
 
     private int defaultTimeoutSeconds = 5;
     private String defaultPassword = "ClueCon";
@@ -186,6 +187,27 @@ public class InboundClientOption {
         this.callbackExecutorThread = callbackExecutorThread;
         return this;
     }
+
+    /**
+     * <p>eventHandleThread.</p>
+     *
+     * @return a int.
+     */
+    public int eventHandleExecutorThread() {
+        return eventHandleExecutorThread;
+    }
+
+    /**
+     * <p>eventHandleThread.</p>
+     *
+     * @param eventHandleExecutorThread a int.
+     * @return a {@link link.thingscloud.freeswitch.esl.inbound.option.InboundClientOption} object.
+     */
+    public InboundClientOption eventHandleExecutorThread(int eventHandleExecutorThread) {
+        this.eventHandleExecutorThread = eventHandleExecutorThread;
+        return this;
+    }
+
 
     /**
      * <p>defaultTimeoutSeconds.</p>

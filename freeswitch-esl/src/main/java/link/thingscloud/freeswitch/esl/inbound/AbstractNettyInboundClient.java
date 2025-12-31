@@ -47,6 +47,7 @@ abstract class AbstractNettyInboundClient implements ChannelEventListener, Inbou
     final EventLoopGroup workerGroup;
     final ExecutorService publicExecutor;
     final ExecutorService privateExecutor;
+    final ExecutorService eventHandlerExecutor;
 
     final InboundClientOption option;
 
@@ -61,6 +62,8 @@ abstract class AbstractNettyInboundClient implements ChannelEventListener, Inbou
                 new DefaultThreadFactory("publicExecutor", true));
         privateExecutor = new ScheduledThreadPoolExecutor(option.privateExecutorThread(),
                 new DefaultThreadFactory("privateExecutor", true));
+        eventHandlerExecutor = new ScheduledThreadPoolExecutor(option.eventHandleExecutorThread(),
+                new DefaultThreadFactory("eventHandlerExecutor", true));
 
         workerGroup = new NioEventLoopGroup(option.workerGroupThread());
         bootstrap.group(workerGroup)
@@ -81,7 +84,7 @@ abstract class AbstractNettyInboundClient implements ChannelEventListener, Inbou
                             pipeline.addLast("readTimeout", new ReadTimeoutHandler(option.readTimeoutSeconds()));
                         }
                         // now the inbound client logic
-                        pipeline.addLast("clientHandler", new InboundChannelHandler(AbstractNettyInboundClient.this, publicExecutor, privateExecutor, option.disablePublicExecutor()));
+                        pipeline.addLast("clientHandler", new InboundChannelHandler(AbstractNettyInboundClient.this, publicExecutor, privateExecutor, eventHandlerExecutor, option.disablePublicExecutor()));
                     }
                 });
     }

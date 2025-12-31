@@ -67,12 +67,14 @@ public abstract class AbstractInboundClientOptionHandler implements InboundClien
      * @return a {@link link.thingscloud.freeswitch.esl.inbound.option.InboundClientOption} object.
      */
     protected InboundClientOption newInboundClientOption() {
-        return new InboundClientOption().sndBufSize(properties.getSndBufSize())
+        return new InboundClientOption()
+                .sndBufSize(properties.getSndBufSize())
                 .rcvBufSize(properties.getRcvBufSize())
                 .workerGroupThread(properties.getWorkerGroupThread())
                 .publicExecutorThread(properties.getPublicExecutorThread())
                 .privateExecutorThread(properties.getPrivateExecutorThread())
                 .callbackExecutorThread(properties.getCallbackExecutorThread())
+                .eventHandleExecutorThread(properties.getEventHandleExecutorThread())
                 .defaultTimeoutSeconds(properties.getDefaultTimeoutSeconds())
                 .readTimeoutSeconds(properties.getReadTimeoutSeconds())
                 .readerIdleTimeSeconds(properties.getReaderIdleTimeSeconds())
@@ -83,5 +85,4 @@ public abstract class AbstractInboundClientOptionHandler implements InboundClien
                 .eventPerformance(properties.isEventPerformance())
                 .eventPerformanceCostTime(properties.getEventPerformanceCostTime());
     }
-
 }
