@@ -89,4 +89,33 @@ abstract class AbstractNettyInboundClient implements ChannelEventListener, Inbou
                 });
     }
 
+    public String dumpThreadPoolStatus() {
+        StringBuilder sb = new StringBuilder(512);
+
+        appendExecutorStatus(sb, "publicExecutor", publicExecutor);
+        appendExecutorStatus(sb, "privateExecutor", privateExecutor);
+        appendExecutorStatus(sb, "eventHandlerExecutor", eventHandlerExecutor);
+
+        return sb.toString();
+    }
+
+
+    private void appendExecutorStatus(StringBuilder sb, String name, ExecutorService executor) {
+        if (!(executor instanceof ScheduledThreadPoolExecutor e)) {
+            sb.append('[').append(name).append("] not a ScheduledThreadPoolExecutor\n");
+            return;
+        }
+
+        sb.append('[').append(name).append("] ")
+                .append("poolSize=").append(e.getPoolSize()).append(", ")
+                .append("active=").append(e.getActiveCount()).append(", ")
+                .append("core=").append(e.getCorePoolSize()).append(", ")
+                .append("max=").append(e.getMaximumPoolSize()).append(", ")
+                .append("queueSize=").append(e.getQueue().size()).append(", ")
+                .append("completed=").append(e.getCompletedTaskCount()).append(", ")
+                .append("taskCount=").append(e.getTaskCount())
+                .append('\n');
+    }
+
+
 }

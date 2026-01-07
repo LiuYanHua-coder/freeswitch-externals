@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * FreeSWITCH Event Socket <strong>events</strong> are decoded into this data object.
@@ -52,8 +53,21 @@ public class EslEvent {
     private final Map<EslHeaders.Name, String> messageHeaders;
     private final Map<String, String> eventHeaders;
     private final List<String> eventBody;
-    private final boolean decodeEventHeaders = true;
+    private boolean decodeEventHeaders = true;
     private String addr;
+
+    public EslEvent(Map<EslHeaders.Name, String> messageHeaders, Map<String, String> eventHeaders, List<String> eventBody, String addr) {
+        this.messageHeaders = messageHeaders;
+        this.eventHeaders = eventHeaders;
+        this.eventBody = eventBody;
+        this.addr = addr;
+    }
+
+    public EslEvent() {
+        this.messageHeaders = new ConcurrentHashMap<>();
+        this.eventHeaders = new ConcurrentHashMap<>();
+        this.eventBody = new ArrayList<>();
+    }
 
     /**
      * <p>Constructor for EslEvent.</p>
